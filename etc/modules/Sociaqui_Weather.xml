@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Sociaqui_Weather>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Sociaqui_Weather>
+    </modules>
+</config>

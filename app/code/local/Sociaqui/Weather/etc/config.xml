@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Sociaqui_Weather>
+            <version>0.1.0</version>
+        </Sociaqui_Weather>
+    </modules>
+    <frontend>
+        <routers>
+            <weather>
+                <use>standard</use>
+                <args>
+                    <module>Sociaqui_Weather</module>
+                    <frontName>weather</frontName>
+                </args>
+            </weather>
+        </routers>
+    </frontend>
+</config>
