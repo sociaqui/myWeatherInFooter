@@ -21,6 +21,11 @@
                 </entities>
             </weather_mysql4>
         </models>
+        <helpers>
+            <weather>
+                <class>Sociaqui_Weather_Helper</class>
+            </weather>
+        </helpers>
         <resources>
             <weather_write>
                 <connection>
@@ -53,5 +58,24 @@
                 </args>
             </weather>
         </routers>
+        <layout>
+            <updates>
+                <weather>
+                    <file>weather.xml</file>
+                </weather>
+            </updates>
+        </layout>
     </frontend>
+    <crontab>
+        <jobs>
+            <update_forecasts_in_database>
+                <schedule>
+                    <cron_expr>*/10 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>weather/observer::updateForecasts</model>
+                </run>
+            </update_forecasts_in_database>
+        </jobs>
+    </crontab>
 </config>

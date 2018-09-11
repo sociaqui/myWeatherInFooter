@@ -7,7 +7,11 @@ class Sociaqui_Weather_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction()
     {
-        $weather = $this->GetWeather();
+        /** @var Sociaqui_Weather_Model_Forecast $forecast */
+        $forecast = Mage::getModel('weather/forecast')->getCollection()->getLastItem();
+
+        $data = $forecast->getData('data');
+        $weather = unserialize($data);
 
         $output = 'RIGHT NOW THE WEATHER IN ' . $weather["LocationName"] . ' IS: ';
         $output .= '<br>';
@@ -106,54 +110,6 @@ class Sociaqui_Weather_IndexController extends Mage_Core_Controller_Front_Action
         }
 
         $this->getResponse()->setBody($output);
-    }
-
-    /**
-     * Gets the current weather from AccuWeather for the given numeric location code (Lublin by default)
-     * use http://dataservice.accuweather.com/locations/v1/cities/search?apikey={key}&q={city} to find other cities
-     *
-     * @param int $locationCode
-     * @param string $location
-     * @param string $apiKey
-     * @return array
-     */
-    private function getWeather($locationCode = 274231, $location = 'Lublin', $apiKey = 'elbFGXDtVANeARtejGztyukgXomEIRBy')
-    {
-        $template = 'http://dataservice.accuweather.com/currentconditions/v1/%s.json?apikey=%s&details=true';
-        $url = sprintf($template, $locationCode, $apiKey);
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_ENCODING => 'gzip,deflate',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_FAILONERROR => true,
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        $weather = [];
-
-        if (empty($err)) {
-            $weather = json_decode(utf8_encode($response), true)[0];
-        } else {
-            Mage::log('An error occurred while trying to access API endpoint', null, 'sociaqui_weather.log');
-            Mage::log('url: ' . $url, null, 'sociaqui_weather.log');
-            Mage::log('error: ' . $err, null, 'sociaqui_weather.log');
-        }
-
-        $weather["LocationName"] = $location;
-        $weather["WeatherText"] = 'placeholder';
-
-        $test1 = serialize($weather);
-        $test2 = unserialize($test1);
-
-        return $weather;
     }
 
 }
