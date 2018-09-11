@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+    <default>
+        <reference name="footer">
+            <block type="weather/footer"
+                   name="weatherblock"
+                   before="bottomContainer"
+                   template="weather/footer.phtml"
+            />
+        </reference>
+    </default>
+</layout>

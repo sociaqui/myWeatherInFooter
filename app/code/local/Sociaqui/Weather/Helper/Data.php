@@ -4,14 +4,13 @@ class Sociaqui_Weather_Helper_Data extends Mage_Core_Helper_Data
 {
     /**
      * Gets the current weather from AccuWeather for the given numeric location code (Lublin by default)
-     * use http://dataservice.accuweather.com/locations/v1/cities/search?apikey={key}&q={city} to find other cities
+     * use https://developer.accuweather.com/accuweather-locations-api/apis/get/locations/v1/cities/search to find other cities
      *
      * @param int $locationCode
-     * @param string $location
      * @param string $apiKey
      * @return array
      */
-    public function getWeather($locationCode = 274231, $location = 'Lublin', $apiKey = 'elbFGXDtVANeARtejGztyukgXomEIRBy')
+    public function getWeather($locationCode = 274231, $apiKey = 'elbFGXDtVANeARtejGztyukgXomEIRBy')  // TODO: add inputs to override these defaults
     {
         $template = 'http://dataservice.accuweather.com/currentconditions/v1/%s.json?apikey=%s&details=true';
         $url = sprintf($template, $locationCode, $apiKey);
@@ -41,8 +40,6 @@ class Sociaqui_Weather_Helper_Data extends Mage_Core_Helper_Data
             Mage::log('url: ' . $url, null, 'sociaqui_weather.log');
             Mage::log('error: ' . $err, null, 'sociaqui_weather.log');
         }
-
-        $weather["LocationName"] = $location;
 
         return $weather;
     }

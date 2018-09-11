@@ -14,12 +14,17 @@ class Sociaqui_Weather_Model_Observer
         $helper = Mage::helper('weather');
         $weather = $helper->getWeather();
 
-        /** @var Sociaqui_Weather_Model_Forecast $forecast */
-        $forecast = Mage::getModel('weather/forecast');
-        $forecast->setData('data', serialize($weather));
-        $forecast->save();
+        if(!empty($weather)) {
+            $location = 'Lublin'; // TODO: make hardcoded value settable
+
+            /** @var Sociaqui_Weather_Model_Forecast $forecast */
+            $forecast = Mage::getModel('weather/forecast');
+            $forecast->setData('rawData', serialize($weather));
+            $forecast->setData('location', $location);
+            $forecast->setData('iconUrl', $weather['WeatherIcon']);
+            $forecast->save();
+        }
 
         return $this;
     }
-
 }
