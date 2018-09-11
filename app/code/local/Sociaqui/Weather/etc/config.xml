@@ -6,6 +6,43 @@
             <version>0.1.0</version>
         </Sociaqui_Weather>
     </modules>
+    <global>
+        <models>
+            <weather>
+                <class>Sociaqui_Weather_Model</class>
+                <resourceModel>weather_mysql4</resourceModel>
+            </weather>
+            <weather_mysql4>
+                <class>Sociaqui_Weather_Model_Mysql4</class>
+                <entities>
+                    <forecast>
+                        <table>sociaqui_weather_forecasts</table>
+                    </forecast>
+                </entities>
+            </weather_mysql4>
+        </models>
+        <resources>
+            <weather_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </weather_write>
+            <weather_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </weather_read>
+            <weather_setup>
+                <setup>
+                    <module>Sociaqui_Weather</module>
+                    <class>Sociaqui_Weather_Model_Resource_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </weather_setup>
+        </resources>
+    </global>
     <frontend>
         <routers>
             <weather>
