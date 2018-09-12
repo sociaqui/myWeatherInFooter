@@ -2,6 +2,10 @@
 
 class Sociaqui_Weather_Helper_Data extends Mage_Core_Helper_Data
 {
+    const XML_CONFIG_PATH_WEATHER_API_KEY = 'weather_setup/api/key';
+    const XML_CONFIG_PATH_WEATHER_LOCATION = 'weather_setup/api/location';
+    const XML_CONFIG_PATH_WEATHER_LOCATION_CODE = 'weather_setup/api/location_code';
+
     const WIND_ARROW_ARRAY = array(
         'W' => '⇐',
         'E' => '⇒',
@@ -29,8 +33,13 @@ class Sociaqui_Weather_Helper_Data extends Mage_Core_Helper_Data
      * @param string $apiKey
      * @return array
      */
-    public function getWeather($locationCode = 274231, $apiKey = 'elbFGXDtVANeARtejGztyukgXomEIRBy')  // TODO: add inputs to override these defaults
+    public function getWeather($locationCode = 274231, $apiKey = 'elbFGXDtVANeARtejGztyukgXomEIRBy')
     {
+//      if provided API key doesn't pass validation use default one anyway
+        if(!$this->validateApiKey($apiKey)){
+            $apiKey = 'elbFGXDtVANeARtejGztyukgXomEIRBy';
+        }
+
         $template = 'http://dataservice.accuweather.com/currentconditions/v1/%s.json?apikey=%s&details=true';
         $url = sprintf($template, $locationCode, $apiKey);
 
@@ -90,5 +99,22 @@ class Sociaqui_Weather_Helper_Data extends Mage_Core_Helper_Data
         );
 
         return $data;
+    }
+
+    /**
+     * 'validates' the provided API key (actually just checks if it's a 32 alphanumeric characters long string, not
+     * really a working key - but it's a start)
+     *
+     * @param string $apiKey
+     * @return bool
+     */
+    public function validateApiKey($apiKey)
+    {
+        if (preg_match('/^[\w\d]{32}$/i', $apiKey)) {
+            $result = true;
+        } else {
+            $result = false;
+        }
+        return $result;
     }
 }

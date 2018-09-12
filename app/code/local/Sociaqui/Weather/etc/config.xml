@@ -95,7 +95,35 @@
                 </children>
             </sociaqui_weather>
         </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <weather_setup>
+                                            <title>Sociaqui Weather in Footer Options</title>
+                                            <sort_order>99999</sort_order>
+                                        </weather_setup>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
     </adminhtml>
+    <default>
+        <weather_setup>
+            <api>
+                <location>Lublin</location>
+                <location_code>274231</location_code>
+            </api>
+        </weather_setup>
+    </default>
     <crontab>
         <jobs>
             <update_forecasts_in_database>

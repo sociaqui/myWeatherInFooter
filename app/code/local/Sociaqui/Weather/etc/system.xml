@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+
+<config>
+    <tabs>
+        <weather translate="label" module="weather">
+            <label>Sociaqui Weather</label>
+            <sort_order>199</sort_order>
+        </weather>
+    </tabs>
+    <sections>
+        <weather_setup translate="label" module="weather">
+            <tab>weather</tab>
+            <label>General Options</label>
+            <frontend_type>text</frontend_type>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <api translate="label">
+                    <label>API</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <key translate="label">
+                            <label>valid AccuWeather API key</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <![CDATA[can be obtained from the <a href="https://developer.accuweather.com/user/register">
+                                AccuWeather website</a>, should be 32 characters long]]>
+                            </comment>
+                            <tooltip>
+                                <![CDATA[my free Limited Trial AccuWeather API key is hardcoded as the default value
+                                in the data getter but it's limited to 50 calls per day, so not really good for
+                                anything more than just testing if the Module works]]>
+                            </tooltip>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </key>
+                        <location translate="label">
+                            <label>location name</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <![CDATA[stored together with weather data, displayed in footer section and archive,
+                                but not directly tied to the data retrieval from API, can be any name or short
+                                description really]]>
+                            </comment>
+                            <tooltip>
+                                <![CDATA[this way you have the freedom to look up the weather forecast for any major
+                                city in your area, but still display the name of your very own small village, city
+                                district, office address or whatever you want]]>
+                            </tooltip>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </location>
+                        <location_code translate="label">
+                            <label>code</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <![CDATA[can be obtained from the
+                                <a href="https://developer.accuweather.com/accuweather-locations-api/apis/get/locations/v1/cities/search">
+                                AccuWeather website</a>]]>
+                            </comment>
+                            <tooltip>
+                                <![CDATA[the actual parameter used in data retrieval from API]]>
+                            </tooltip>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </location_code>
+                    </fields>
+                </api>
+            </groups>
+        </weather_setup>
+    </sections>
+</config>

@@ -12,10 +12,12 @@ class Sociaqui_Weather_Model_Observer
     {
         /** @var Sociaqui_Weather_Helper_Data $helper */
         $helper = Mage::helper('weather');
-        $weather = $helper->getWeather();
+        $apiKey = Mage::getStoreConfig(Sociaqui_Weather_Helper_Data::XML_CONFIG_PATH_WEATHER_API_KEY);
+        $location = Mage::getStoreConfig(Sociaqui_Weather_Helper_Data::XML_CONFIG_PATH_WEATHER_LOCATION_CODE);
+        $weather = $helper->getWeather($location, $apiKey);
 
         if(!empty($weather)) {
-            $location = 'Lublin'; // TODO: make hardcoded value settable
+            $location = Mage::getStoreConfig(Sociaqui_Weather_Helper_Data::XML_CONFIG_PATH_WEATHER_LOCATION);
 
             $iconUrl = sprintf("/media/weather/icons/%02d-s.png", $weather["WeatherIcon"]);
 
