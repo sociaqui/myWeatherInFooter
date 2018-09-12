@@ -71,6 +71,31 @@
             </updates>
         </layout>
     </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                    <weather before="Mage_Adminhtml">Sociaqui_Weather_Adminhtml</weather>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <menu>
+            <sociaqui_weather translate="title" module="weather">
+                <title>Sociaqui Weather</title>
+                <sort_order>88</sort_order>
+                <children>
+                    <archive module="weather">
+                        <title>Forecasts Archive</title>
+                        <action>adminhtml/weather</action>
+                    </archive>
+                </children>
+            </sociaqui_weather>
+        </menu>
+    </adminhtml>
     <crontab>
         <jobs>
             <update_forecasts_in_database>
