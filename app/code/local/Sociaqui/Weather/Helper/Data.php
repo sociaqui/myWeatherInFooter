@@ -2,6 +2,25 @@
 
 class Sociaqui_Weather_Helper_Data extends Mage_Core_Helper_Data
 {
+    const WIND_ARROW_ARRAY = array(
+        'W' => '⇐',
+        'E' => '⇒',
+        'N' => '⇑',
+        'S' => '⇓',
+        'NW' => '⇖',
+        'NE' => '⇗',
+        'SE' => '⇘',
+        'SW' => '⇙',
+        'NNW' => '⇖',
+        'NNE' => '⇗',
+        'SSE' => '⇘',
+        'SSW' => '⇙',
+        'WNW' => '⇖',
+        'WSW' => '⇙',
+        'ENE' => '⇗',
+        'ESE' => '⇘',
+    );
+
     /**
      * Gets the current weather from AccuWeather for the given numeric location code (Lublin by default)
      * use https://developer.accuweather.com/accuweather-locations-api/apis/get/locations/v1/cities/search to find other cities
@@ -42,5 +61,34 @@ class Sociaqui_Weather_Helper_Data extends Mage_Core_Helper_Data
         }
 
         return $weather;
+    }
+
+    /**
+     * Creates an orderly array with data stored under keys that work as labels on the display
+     *
+     * @param array $rawData
+     * @return array
+     */
+    public function parseWeatherData($rawData)
+    {
+        $url = '<a href="' . $rawData['Link'] . '" title="Superior Accuracy in Action">AccuWeather APIs</a>';
+        $formattedTime = date('H:i:s \o\n D jS \of F Y', strtotime($rawData['LocalObservationDateTime']));
+
+        $data = array(
+            'General conditions: ' => $rawData["WeatherText"],
+            'Temperature: ' => $rawData['Temperature']['Metric']['Value']
+                . ' ' .
+                $rawData['Temperature']['Metric']['Unit'],
+            'Wind: ' => $rawData['Wind']['Speed']['Metric']['Value']
+                . ' ' .
+                $rawData['Wind']['Speed']['Metric']['Unit'],
+            'Pressure: ' => $rawData['Pressure']['Metric']['Value']
+                . ' ' .
+                $rawData['Pressure']['Metric']['Unit'],
+            'last updated at: ' => $formattedTime,
+            'Source: ' => $url,
+        );
+
+        return $data;
     }
 }

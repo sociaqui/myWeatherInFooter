@@ -1,53 +1,35 @@
 <?php
-    $data = $this->getWeatherData();
-    $weather = unserialize($data['rawData']);
-    
-    $output .= 'General conditions: ';
-    $output .= $weather["WeatherText"];
-    $output .= '<br>';
-    $output .= 'Temperature: ';
-    $output .= $weather['Temperature']['Metric']['Value'];
-    $output .= ' ';
-    $output .= $weather['Temperature']['Metric']['Unit'];
-    $output .= '<br>';
-    $output .= 'Wind: ';
-    $output .= $weather['Wind']['Speed']['Metric']['Value'];
-    $output .= ' ';
-    $output .= $weather['Wind']['Speed']['Metric']['Unit'];
-    $output .= ' ';
-    $output .= $weather['Wind']['Direction']['Localized'];
-    $output .= '<br>';
-    $output .= 'Pressure: ';
-    $output .= $weather['Pressure']['Metric']['Value'];
-    $output .= ' ';
-    $output .= $weather['Pressure']['Metric']['Unit'];
-    $output .= '<br>';
-    $output .= 'last updated: ';
-    $output .= $weather['LocalObservationDateTime'];
-    $output .= '<br>';
-    $output .= 'Source: ';
-    $output .= $weather['Link'];
-    $output .= '<br>';
-    $output .= '<img src="https://developer.accuweather.com/sites/default/files/';
-    $output .= sprintf("%02d", $weather["WeatherIcon"]);
-    $output .= '-s.png" width="75" height="45" alt="';
-    $output .= $weather["WeatherText"];
-    $output .= '" title="';
-    $output .= $weather["WeatherText"];
-    $output .= '">';
+$forecast = $this->getWeatherData();
+$rawData = unserialize($forecast['rawData']);
+$parsedData = $this->getParsedData($rawData);
+$windDirection = $this->getWindDirection($rawData);
 ?>
 
 <div class="block footer-weather">
-<!--    --><?php //echo $output ?>
-    <div class="block-title">
+    <div class="block-title" style="margin: 0 auto;width: 250px">
         <strong>
             <span>
                 The weather in
-                <?php echo $data["location"] ?>
+                <?php echo $forecast["location"] ?>
             </span>
         </strong>
     </div>
-    <div>
-        <?php echo $output ?>
-    </div>
+    <ul style="list-style-type: disc;-webkit-columns: 2;-moz-columns: 2;columns: 2;list-style-position: inside;">
+        <?php foreach ($parsedData as $label => $value): ?>
+            <li>
+                <?php
+                    echo $label . $value;
+                    if ($label == 'Wind: ') {
+                        echo $windDirection;
+                    }
+                ?>
+            </li>
+        <?php endforeach ?>
+    </ul>
+    <img src="<?php echo $forecast["iconUrl"] ?>"
+         width="75"
+         height="45"
+         alt="<?php echo $parsedData['General conditions: '] ?>"
+         title="<?php echo $parsedData['General conditions: '] ?>"
+    >
 </div>

@@ -8,8 +8,20 @@ class Sociaqui_Weather_IndexController extends Mage_Core_Controller_Front_Action
     public function indexAction()
     {
         $this->loadLayout();
-        $this->renderLayout();
 
+        /** @var Mage_Core_Model_Layout $layout */
+        $layout = $this->getLayout();
+
+        /** @var Mage_Core_Block_Text_List $content */
+        $content = $layout->getBlock('content');
+
+        /** @var Mage_Core_Block_Template $newBlock */
+        $newBlock = $layout->createBlock('weather/welcome', 'welcome_text');
+
+        $newBlock->setTemplate('weather/welcome.phtml');
+        $content->append($newBlock);
+
+        $this->renderLayout();
     }
 
     public function testModelAction()
@@ -20,43 +32,10 @@ class Sociaqui_Weather_IndexController extends Mage_Core_Controller_Front_Action
         $forecast->load($params['id']);
 
         $data = $forecast->getData();
-        $weather = unserialize($data['data']);
+        $rawData = unserialize($data['rawData']);
 
-        $output = 'Loading the forecast with an ID of #' . $params['id'];
-        $output .= '<br>';
-        $output .= '<br>';
-        $output .= 'RIGHT NOW THE WEATHER IN ' . $weather["LocationName"] . ' IS: ';
-        $output .= '<br>';
-        $output .= '<br>';
-        $output .= 'General conditions: ';
-        $output .= $weather["WeatherText"];
-        $output .= '<br>';
-        $output .= 'Temperature: ';
-        $output .= $weather['Temperature']['Metric']['Value'];
-        $output .= ' ';
-        $output .= $weather['Temperature']['Metric']['Unit'];
-        $output .= '<br>';
-        $output .= 'Wind: ';
-        $output .= $weather['Wind']['Speed']['Metric']['Value'];
-        $output .= ' ';
-        $output .= $weather['Wind']['Speed']['Metric']['Unit'];
-        $output .= ' ';
-        $output .= $weather['Wind']['Direction']['Localized'];
-        $output .= '<br>';
-        $output .= 'Pressure: ';
-        $output .= $weather['Pressure']['Metric']['Value'];
-        $output .= ' ';
-        $output .= $weather['Pressure']['Metric']['Unit'];
-        $output .= '<br>';
-        $output .= 'last updated: ';
-        $output .= $weather['LocalObservationDateTime'];
-        $output .= '<br>';
-        $output .= 'Source: ';
-        $output .= $weather['Link'];
-        $output .= '<br>';
-        $output .= '<img src="https://developer.accuweather.com/sites/default/files/' . sprintf("%02d", $weather["WeatherIcon"]) . '-s.png" width="75" height="45" alt="' . $weather["WeatherText"] . '" title="' . $weather["WeatherText"] . '">';
+        var_dump($rawData);
 
-        $this->getResponse()->setBody($output);
     }
 
     public function showAllForecastsAction()
@@ -67,7 +46,15 @@ class Sociaqui_Weather_IndexController extends Mage_Core_Controller_Front_Action
 
         foreach ($forecasts as $forecast) {
             $output .= '<h3>' . $forecast->getTimestamp() . '</h3>';
-            $output .= $forecast->getData()['data'];
+            $output .= $forecast->getData()['location'];
+            $output .= '<br>';
+            $output .= 'RAW: ';
+            $output .= $forecast->getData()['rawData'];
+            $output .= '<br>';
+            $output .= 'PARSED: ';
+            $output .= $forecast->getData()['parsedData'];
+            $output .= '<br>';
+            $output .= $forecast->getData()['iconUrl'];
             $output .= '<br>';
         }
 

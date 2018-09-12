@@ -17,12 +17,19 @@ class Sociaqui_Weather_Model_Observer
         if(!empty($weather)) {
             $location = 'Lublin'; // TODO: make hardcoded value settable
 
+            $iconUrl = sprintf("/media/weather/icons/%02d-s.png", $weather["WeatherIcon"]);
+
             /** @var Sociaqui_Weather_Model_Forecast $forecast */
             $forecast = Mage::getModel('weather/forecast');
             $forecast->setData('rawData', serialize($weather));
             $forecast->setData('location', $location);
-            $forecast->setData('iconUrl', $weather['WeatherIcon']);
-            $forecast->save();
+            $forecast->setData('iconUrl', $iconUrl);
+            try {
+                $forecast->save();
+            }catch (Exception $e){
+                Mage::log('An error occurred while trying to save latest weather forecast to Db', null, 'sociaqui_weather.log');
+                Mage::log('error: ' . $e, null, 'sociaqui_weather.log');
+            }
         }
 
         return $this;
